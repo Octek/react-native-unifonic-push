@@ -1,31 +1,35 @@
-import * as React from 'react';
+import * as React from "react";
 
-import { StyleSheet, View, Text } from 'react-native';
-import { multiply } from 'react-native-unifonic-push';
+import { StyleSheet, View, Text } from "react-native";
+import { UnifonicPush } from "react-native-unifonic-push";
 
 export default function App() {
-  const [result, setResult] = React.useState<number | undefined>();
+    const [token, setToken] = React.useState<string | null>();
 
-  React.useEffect(() => {
-    multiply(3, 7).then(setResult);
-  }, []);
+    React.useEffect(() => {
+        (async () => {
+            const unifonicPush = new UnifonicPush(true);
+            const t = await unifonicPush.register("appId", "identifier");
+            setToken(t);
+        })();
+    }, []);
 
-  return (
-    <View style={styles.container}>
-      <Text>Result: {result}</Text>
-    </View>
-  );
+    return (
+        <View style={styles.container}>
+            <Text>Result: {token}</Text>
+        </View>
+    );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  box: {
-    width: 60,
-    height: 60,
-    marginVertical: 20,
-  },
+    container: {
+        flex: 1,
+        alignItems: "center",
+        justifyContent: "center",
+    },
+    box: {
+        width: 60,
+        height: 60,
+        marginVertical: 20,
+    },
 });
